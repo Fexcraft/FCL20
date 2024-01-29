@@ -57,6 +57,7 @@ public class FCL {
 		EnvInfo.CLIENT = FMLLoader.getDist().isClient();
 		EnvInfo.DEV = !FMLEnvironment.production;
 		CONTAINERS.register(bus);
+		UniversalAttachments.register(bus);
 	}
 
 	@Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
