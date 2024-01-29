@@ -4,7 +4,7 @@ package net.fexcraft.mod.uni.uimpl;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.mod.fcl.UniReg;
+import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.ui.*;
 import net.minecraft.client.gui.GuiGraphics;
