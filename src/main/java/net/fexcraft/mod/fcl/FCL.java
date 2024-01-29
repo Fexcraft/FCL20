@@ -3,6 +3,7 @@ package net.fexcraft.mod.fcl;
 import com.mojang.logging.LogUtils;
 import net.fexcraft.mod.fcl.util.UIPacket;
 import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.uimpl.UniCon;
 import net.fexcraft.mod.uni.uimpl.UniUI;
 import net.minecraft.client.Minecraft;
@@ -56,6 +57,7 @@ public class FCL {
 	public FCL(IEventBus bus){
 		EnvInfo.CLIENT = FMLLoader.getDist().isClient();
 		EnvInfo.DEV = !FMLEnvironment.production;
+		UniReg.LOADER_VERSION = "1.20";
 		CONTAINERS.register(bus);
 		UniversalAttachments.register(bus);
 	}
