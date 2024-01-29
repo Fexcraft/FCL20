@@ -2,17 +2,22 @@ package net.fexcraft.mod.fcl.util;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.uni.uimpl.UniCon;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -97,7 +102,28 @@ public class Passenger extends EntityW {
 
 	@Override
 	public void openUI(int ui, WorldW world, V3I pos){
-		//TODO
+		//
+	}
+
+	@Override
+	public void openUI(String id, WorldW world, V3I pos){
+		((Player)entity).openMenu(new MenuProvider(){
+			@Override
+			public Component getDisplayName(){
+				return Component.literal("Fexcraft Universal UI");
+			}
+			@Nullable
+			@Override
+			public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player){
+				return new UniCon(i, inventory, id, null, pos);
+			}
+		}, buf -> {
+			buf.writeInt(id.length());
+			buf.writeUtf(id);
+			buf.writeInt(pos.x);
+			buf.writeInt(pos.y);
+			buf.writeInt(pos.z);
+		});
 	}
 
 	@Override
