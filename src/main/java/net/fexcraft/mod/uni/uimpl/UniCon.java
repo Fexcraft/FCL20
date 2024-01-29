@@ -4,7 +4,7 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
-import net.fexcraft.mod.fcl.UniReg;
+import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.fcl.UniversalAttachments;
 import net.fexcraft.mod.fcl.util.Passenger;
 import net.fexcraft.mod.fcl.util.UIPacket;
@@ -17,12 +17,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
