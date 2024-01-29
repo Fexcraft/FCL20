@@ -33,13 +33,13 @@ public class UniCon extends AbstractContainerMenu {
 	protected UniUI screen;
 	protected Player player;
 
-	public UniCon(int id, Inventory inv, String coninpos, FriendlyByteBuf buffer){
+	public UniCon(int id, Inventory inv, String coninpos, FriendlyByteBuf buffer, V3I pos){
 		super(FCL.UNIVERSAL.get(), id);
 		stack = inv.player.getItemInHand(InteractionHand.MAIN_HAND);
 		player = inv.player;
-		ui_type = coninpos;
+		ui_type = coninpos == null ? buffer.readUtf(buffer.readInt()) : coninpos;
 		JsonMap map = getJson(UniReg.MENU_JSON.get(ui_type) + ".json");
-		V3I pos = new V3I(buffer.readInt(), buffer.readInt(), buffer.readInt());
+		pos = buffer == null ? pos : new V3I(buffer.readInt(), buffer.readInt(), buffer.readInt());
 		Passenger pass = inv.player.getData(UniversalAttachments.PASSENGER);
 		try{
 			con = UniReg.MENU.get(ui_type).getConstructor(JsonMap.class, EntityW.class, V3I.class).newInstance(map, pass, pos);
@@ -56,7 +56,7 @@ public class UniCon extends AbstractContainerMenu {
 	protected UniUI uni;
 
 	public UniCon(int id, Inventory inv, FriendlyByteBuf buffer){
-		this(id, inv, buffer.readUtf(buffer.readInt()), buffer);
+		this(id, inv, buffer.readUtf(buffer.readInt()), buffer, null);
 	}
 
 	@Override
