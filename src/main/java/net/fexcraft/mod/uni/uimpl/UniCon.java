@@ -5,6 +5,8 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.fcl.UniReg;
+import net.fexcraft.mod.fcl.UniversalAttachments;
+import net.fexcraft.mod.fcl.util.Passenger;
 import net.fexcraft.mod.fcl.util.UIPacket;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
@@ -38,8 +40,9 @@ public class UniCon extends AbstractContainerMenu {
 		ui_type = coninpos;
 		JsonMap map = getJson(UniReg.MENU_JSON.get(ui_type) + ".json");
 		V3I pos = new V3I(buffer.readInt(), buffer.readInt(), buffer.readInt());
+		Passenger pass = inv.player.getData(UniversalAttachments.PASSENGER);
 		try{
-			con = UniReg.MENU.get(ui_type).getConstructor(JsonMap.class, EntityW.class, V3I.class).newInstance(map, null, pos);
+			con = UniReg.MENU.get(ui_type).getConstructor(JsonMap.class, EntityW.class, V3I.class).newInstance(map, pass, pos);
 		}
 		catch(Exception e){
 			e.printStackTrace();
