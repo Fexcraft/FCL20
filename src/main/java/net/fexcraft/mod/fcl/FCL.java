@@ -1,8 +1,6 @@
 package net.fexcraft.mod.fcl;
 
 import com.mojang.logging.LogUtils;
-import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.util.UIPacket;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDLManager;
@@ -12,45 +10,25 @@ import net.fexcraft.mod.uni.impl.TagCWI;
 import net.fexcraft.mod.uni.impl.TagLWI;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
-import net.fexcraft.mod.uni.ui.*;
+import net.fexcraft.mod.uni.ui.UIButton;
+import net.fexcraft.mod.uni.ui.UIField;
+import net.fexcraft.mod.uni.ui.UITab;
+import net.fexcraft.mod.uni.ui.UIText;
 import net.fexcraft.mod.uni.uimpl.*;
-import net.fexcraft.mod.uni.world.EntityW;
-import net.fexcraft.mod.uni.world.WorldW;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 
 /**
@@ -70,6 +48,7 @@ public class FCL {
 		EnvInfo.DEV = !FMLEnvironment.production;
 		UniReg.LOADER_VERSION = "1.20";
 		IDLManager.INSTANCE[0] = new IDLM();
+		TagCW.WRAPPER[0] = com -> new TagCWI((CompoundTag)com);
 		TagCW.SUPPLIER[0] = () -> new TagCWI();
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
 		if(EnvInfo.CLIENT){
