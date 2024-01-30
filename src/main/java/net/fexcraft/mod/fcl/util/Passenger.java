@@ -106,7 +106,7 @@ public class Passenger extends EntityW {
 	}
 
 	@Override
-	public void openUI(String id, WorldW world, V3I pos){
+	public void openUI(String id, V3I pos){
 		((Player)entity).openMenu(new MenuProvider(){
 			@Override
 			public Component getDisplayName(){
