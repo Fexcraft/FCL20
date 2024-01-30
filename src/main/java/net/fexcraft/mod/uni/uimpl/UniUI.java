@@ -46,8 +46,8 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		width = ui.width;
-		height = ui.height;
+		imageWidth = ui.width;
+		imageHeight = ui.height;
 	}
 
 	@Override
