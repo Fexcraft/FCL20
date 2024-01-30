@@ -194,4 +194,9 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		ui.scrollwheel(am, x, y);
 	}
 
+	@Override
+	protected void renderLabels(GuiGraphics gg, int mx, int my){
+		//
+	}
+
 }
