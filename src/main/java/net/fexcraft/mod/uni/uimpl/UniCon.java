@@ -4,13 +4,16 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
+import net.fexcraft.mod.fcl.util.UIPacketReceiver;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.fcl.UniversalAttachments;
 import net.fexcraft.mod.fcl.util.Passenger;
 import net.fexcraft.mod.fcl.util.UIPacket;
 import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.world.EntityW;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -25,7 +28,7 @@ import java.io.IOException;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class UniCon extends AbstractContainerMenu {
+public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 
 	protected ItemStack stack;
 	protected UniUI screen;
@@ -90,6 +93,11 @@ public class UniCon extends AbstractContainerMenu {
 			if(EnvInfo.DEV) throw new RuntimeException(e);
 			return new JsonMap();
 		}
+	}
+
+	@Override
+	public void onPacket(CompoundTag com, boolean client){
+		con.packet(TagCW.wrap(com), client);
 	}
 
 }
