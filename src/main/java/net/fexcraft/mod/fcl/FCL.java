@@ -1,11 +1,21 @@
 package net.fexcraft.mod.fcl;
 
 import com.mojang.logging.LogUtils;
+import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.util.UIPacket;
 import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.UniReg;
-import net.fexcraft.mod.uni.uimpl.UniCon;
-import net.fexcraft.mod.uni.uimpl.UniUI;
+import net.fexcraft.mod.uni.impl.IDLM;
+import net.fexcraft.mod.uni.impl.TagCWI;
+import net.fexcraft.mod.uni.impl.TagLWI;
+import net.fexcraft.mod.uni.tag.TagCW;
+import net.fexcraft.mod.uni.tag.TagLW;
+import net.fexcraft.mod.uni.ui.*;
+import net.fexcraft.mod.uni.uimpl.*;
+import net.fexcraft.mod.uni.world.EntityW;
+import net.fexcraft.mod.uni.world.WorldW;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -40,6 +50,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 
 /**
@@ -58,15 +69,25 @@ public class FCL {
 		EnvInfo.CLIENT = FMLLoader.getDist().isClient();
 		EnvInfo.DEV = !FMLEnvironment.production;
 		UniReg.LOADER_VERSION = "1.20";
-		CONTAINERS.register(bus);
+		IDLManager.INSTANCE[0] = new IDLM();
+		TagCW.SUPPLIER[0] = () -> new TagCWI();
+		TagLW.SUPPLIER[0] = () -> new TagLWI();
+		if(EnvInfo.CLIENT){
+			UITab.IMPLEMENTATION = UUITab.class;
+			UIText.IMPLEMENTATION = UUIText.class;
+			UIField.IMPLEMENTATION = UUIField.class;
+			UIButton.IMPLEMENTATION = UUIButton.class;
+		}
+		//
 		UniversalAttachments.register(bus);
+		CONTAINERS.register(bus);
 	}
 
 	@Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
 
         @SubscribeEvent
-        public static void register(final RegisterPayloadHandlerEvent event) {
+        public static void register(final RegisterPayloadHandlerEvent event){
             final IPayloadRegistrar registrar = event.registrar(MODID).versioned("1.0.0").optional();
             registrar.common(UI_PACKET, UIPacket::read, handler -> {
                 handler.server(UIPacket::handle_server);
