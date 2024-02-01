@@ -51,10 +51,10 @@ public class UUIText extends UIText {
 			uui.matrix.drawString(uui.getMinecraft().font, value, xx, yy, hovered ? hover.packed : color.packed, shadow);
 		}
 		else{
-			float scale = (this.scale < 0.0F) ? (width / uui.getMinecraft().font.width(value)) : this.scale;
+			float scale = this.scale < 0.0F ? width / (float)textwidth : this.scale;
 			uui.matrix.pose().pushPose();
 			uui.matrix.pose().translate(xx, yy, 0.0F);
-			uui.matrix.pose().scale(scale, scale, scale);
+			uui.matrix.pose().scale(scale, 1, 1);
 			uui.matrix.drawString(uui.getMinecraft().font, value, 0, 0, hovered ? hover.packed : color.packed, shadow);
 			uui.matrix.pose().popPose();
 		}
