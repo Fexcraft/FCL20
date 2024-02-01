@@ -25,7 +25,8 @@ import java.util.*;
  * @author Ferdinand Calo' (FEX___96)
  */
 public class UniUI extends AbstractContainerScreen<UniCon> {
-	
+
+	public static UniUI INST;
 	protected LinkedHashMap<String, UITab> tabs = new LinkedHashMap<>();
 	protected ArrayList<Component> comtip = new ArrayList<>();
 	protected ArrayList<String> tooltip = new ArrayList<>();
@@ -52,6 +53,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		}
 		imageWidth = ui.width;
 		imageHeight = ui.height;
+		INST = this;
 	}
 
 	@Override
@@ -85,17 +87,30 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			else minecraft.player.closeContainer();
 			return true;
 		}
-		for(GuiEventListener w : children()){
-			if(w instanceof EditBox && (w.keyPressed(key, code, mod) || w.isFocused())) return true;
+		var focus = getFocused();
+		if(focus instanceof EditBox){
+			if(focus.keyPressed(key, code, mod)) return true;
 		}
-		return super.keyPressed(key, code, mod);
+		boolean inv = minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(key, code));
+		boolean shift = minecraft.options.keyShift.isActiveAndMatches(InputConstants.getKey(key, code));
+		return inv || shift ? true : super.keyPressed(key, code, mod);
+	}
+
+	@Override
+	public boolean keyReleased(int key, int code, int mod){
+		var focus = getFocused();
+		if(focus instanceof EditBox){
+			if(focus.keyReleased(key, code, mod)) return true;
+		}
+		return super.keyReleased(key, code, mod);
 	}
 
 	@Override
 	public boolean charTyped(char c, int code){
-		boolean invbutton = minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(c, code));
+		boolean inv = minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(c, code));
+		boolean shift = minecraft.options.keyShift.isActiveAndMatches(InputConstants.getKey(c, code));
 		boolean keytyped = super.charTyped(c, code);
-		if(code == 1 || (invbutton && !keytyped)){
+		if(code == 1 || ((inv || shift) && !keytyped)){
 			if(ui.returnto != null){
 				TagCW com = TagCW.create();
 				com.set("return", true);
