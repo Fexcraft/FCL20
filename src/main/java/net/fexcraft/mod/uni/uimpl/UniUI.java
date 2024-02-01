@@ -4,6 +4,7 @@ package net.fexcraft.mod.uni.uimpl;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.ui.*;
@@ -12,13 +13,12 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -26,6 +26,8 @@ import java.util.Map;
 public class UniUI extends AbstractContainerScreen<UniCon> {
 	
 	protected LinkedHashMap<String, UITab> tabs = new LinkedHashMap<>();
+	protected ArrayList<Component> comtip = new ArrayList<>();
+	protected ArrayList<String> tooltip = new ArrayList<>();
 	protected UserInterface ui;
 	protected GuiGraphics matrix;
 	protected UITab tab;
@@ -143,6 +145,18 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			if(w instanceof AbstractWidget) ((AbstractWidget)w).render(matrix, mx, my, ticks);
 		}
 		postdraw(ticks, mx, my);
+		tooltip.clear();
+		for(UIButton button : ui.buttons.values()){
+			if(button.tooltip != null && button.hovered(leftPos, topPos, mx, my)){
+				tooltip.add(Formatter.format(I18n.get(button.tooltip)));
+			}
+		}
+		ui.getTooltip(leftPos, topPos, mx, my, tooltip);
+		if(tooltip.size() > 0){
+			comtip.clear();
+			for(String str : tooltip) comtip.add(Component.literal(str));
+			matrix.renderTooltip(minecraft.font, comtip, Optional.empty(), mx, my);
+		}
 	}
 
 	protected void predraw(float ticks, int mx, int my){
