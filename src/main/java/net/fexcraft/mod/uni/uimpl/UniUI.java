@@ -37,6 +37,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			for(UITab tab : ui.tabs.values()){
 				for(UIField field : tab.fields.values()){
 					((UUIField)field).init();
+					addWidget(((UUIField)field).field);
 				}
 			}
 		});
