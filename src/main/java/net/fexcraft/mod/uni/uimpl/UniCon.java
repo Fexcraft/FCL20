@@ -97,6 +97,10 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 
 	@Override
 	public void onPacket(CompoundTag com, boolean client){
+		if(com.getBoolean("return")){
+			con.player.openUI(con.ui_map.getString("return", null), con.pos);
+			return;
+		}
 		con.packet(TagCW.wrap(com), client);
 	}
 
