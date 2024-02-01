@@ -91,26 +91,17 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		return super.keyPressed(key, code, mod);
 	}
 
-
+	@Override
 	public boolean charTyped(char c, int code){
 		boolean invbutton = minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(c, code));
-		boolean keytyped = false;
-		for(UITab tab : tabs.values()){
-			if(!tab.visible() || tab.fields.isEmpty()) continue;
-			boolean bool = false;
-			for(UIField field : tab.fields.values()){
-				if(bool) break;
-				if(field.visible() && field.keytyped(c, code)){
-					bool = true;
-				}
-			}
-			if(!bool){
-				return super.charTyped(c, code);
-			}
-			keytyped = true;
-		}
+		boolean keytyped = super.charTyped(c, code);
 		if(code == 1 || (invbutton && !keytyped)){
-			menu.player.closeContainer();
+			if(ui.returnto != null){
+				TagCW com = TagCW.create();
+				com.set("return", true);
+				menu.con.SEND_TO_SERVER.accept(com);
+			}
+			else minecraft.player.closeContainer();
 			return false;
 		}
 		return true;
@@ -153,7 +144,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		postdraw(ticks, mx, my);
 		tooltip.clear();
 		for(UIButton button : ui.buttons.values()){
-			if(button.tooltip != null && button.hovered(leftPos, topPos, mx, my)){
+			if(button.visible() && button.tooltip != null && button.hovered(leftPos, topPos, mx, my)){
 				tooltip.add(Formatter.format(I18n.get(button.tooltip)));
 			}
 		}
