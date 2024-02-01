@@ -19,16 +19,16 @@ public class UUIField extends UIField {
 	}
 
 	public void draw(Object gui, UIElement root, float ticks, int gl, int gt, int mx, int my){
-		if(this.field == null || !visible()) return;
-		field.setX(this.absolute ? ((this.x < 0) ? (this.ui.screen_width + this.x) : this.x) : (gl + this.x));
-		field.setY(this.absolute ? ((this.y < 0) ? (this.ui.screen_height + this.y) : this.y) : (gt + this.y));
+		if(field == null || !visible()) return;
+		field.setX(absolute ? x < 0 ? ui.screen_width + x : x : gl + x);
+		field.setY(absolute ? y < 0 ? ui.screen_height + y : y : gt + y);
 	}
 
 	public void init(){
-		field = new EditBox(Minecraft.getInstance().font, 0, 0, this.width, this.height, null){
+		field = new EditBox(Minecraft.getInstance().font, 0, 0, width, height, null){
 			@Override
 			public void setValue(String text){
-				if(UUIField.this.regex != null) text = text.replaceAll(UUIField.this.regex, "");
+				if(regex != null) text = text.replaceAll(regex, "");
 				super.setValue(text);
 			}
 		};
@@ -54,13 +54,7 @@ public class UUIField extends UIField {
 
 	public boolean onclick(int mx, int my, int mb){
 		boolean bool = field.mouseClicked(mx, my, mb);
-		field.setFocused(true);
-		for(UIField uif : ui.fields.values()){
-			UUIField uuif = (UUIField)uif;
-			if(uuif.field.isFocused() && uuif.field != this.field){
-				uuif.field.setFocused(false);
-			}
-		}
+		UniUI.INST.setFocused(field);
 		return bool;
 	}
 
