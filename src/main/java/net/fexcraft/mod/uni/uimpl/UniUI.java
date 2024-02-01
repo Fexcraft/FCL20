@@ -5,8 +5,9 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.utils.Formatter;
-import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.UniReg;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.*;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -76,7 +77,12 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	@Override
 	public boolean keyPressed(int key, int code, int mod){
 		if(key == 256){
-			minecraft.player.closeContainer();
+			if(ui.returnto != null){
+				TagCW com = TagCW.create();
+				com.set("return", true);
+				menu.con.SEND_TO_SERVER.accept(com);
+			}
+			else minecraft.player.closeContainer();
 			return true;
 		}
 		for(GuiEventListener w : children()){
