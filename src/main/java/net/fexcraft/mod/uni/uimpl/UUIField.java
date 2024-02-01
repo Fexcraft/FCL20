@@ -65,7 +65,7 @@ public class UUIField extends UIField {
 	}
 
 	public boolean keytyped(char c, int code){
-		return field.keyPressed(c, code, 0);
+		return field.charTyped(c, code);
 	}
 
 	public void text(String text){
