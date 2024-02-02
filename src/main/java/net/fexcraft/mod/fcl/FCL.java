@@ -38,7 +38,7 @@ import org.slf4j.Logger;
 public class FCL {
 
 	public static final String MODID = "fcl";
-	private static final Logger LOGGER = LogUtils.getLogger();
+	public static final Logger LOGGER = LogUtils.getLogger();
     public static final ResourceLocation UI_PACKET = new ResourceLocation(MODID, "ui");
 	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(Registries.MENU, MODID);
     public static final DeferredHolder<MenuType<?>, MenuType<UniCon>> UNIVERSAL = CONTAINERS.register("editor", () -> IMenuTypeExtension.create(UniCon::new));
