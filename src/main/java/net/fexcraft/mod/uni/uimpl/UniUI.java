@@ -87,20 +87,19 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			else minecraft.player.closeContainer();
 			return true;
 		}
-		var focus = getFocused();
-		if(focus instanceof EditBox){
-			if(focus.keyPressed(key, code, mod)) return true;
+		if(getFocused() instanceof EditBox){
+			getFocused().keyPressed(key, code, mod);
+			return true;
 		}
 		boolean inv = minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(key, code));
-		boolean shift = minecraft.options.keyShift.isActiveAndMatches(InputConstants.getKey(key, code));
-		return inv || shift ? true : super.keyPressed(key, code, mod);
+		return inv ? true : super.keyPressed(key, code, mod);
 	}
 
 	@Override
 	public boolean keyReleased(int key, int code, int mod){
-		var focus = getFocused();
-		if(focus instanceof EditBox){
-			if(focus.keyReleased(key, code, mod)) return true;
+		if(getFocused() instanceof EditBox){
+			getFocused().keyReleased(key, code, mod);
+			return true;
 		}
 		return super.keyReleased(key, code, mod);
 	}
@@ -108,9 +107,12 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	@Override
 	public boolean charTyped(char c, int code){
 		boolean inv = minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(c, code));
-		boolean shift = minecraft.options.keyShift.isActiveAndMatches(InputConstants.getKey(c, code));
+		if(getFocused() instanceof EditBox){
+			getFocused().charTyped(c, code);
+			return true;
+		}
 		boolean keytyped = super.charTyped(c, code);
-		if(code == 1 || ((inv || shift) && !keytyped)){
+		if(code == 1 || (inv && !keytyped)){
 			if(ui.returnto != null){
 				TagCW com = TagCW.create();
 				com.set("return", true);
