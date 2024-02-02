@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fcl.util;
 
 import net.fexcraft.mod.fcl.FCL;
+import net.fexcraft.mod.uni.uimpl.UniCon;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -28,13 +29,31 @@ public record UIPacket(CompoundTag com) implements CustomPacketPayload {
 
 	public void handle_client(IPayloadContext context){
 		context.workHandler().submitAsync(() -> {
-			((UIPacketReceiver)net.minecraft.client.Minecraft.getInstance().player.containerMenu).onPacket(com, true);
+			try{
+				((UIPacketReceiver)net.minecraft.client.Minecraft.getInstance().player.containerMenu).onPacket(com, true);
+			}
+			catch(Exception e){
+				FCL.LOGGER.info("Packet Error: " + com.toString());
+				if(net.minecraft.client.Minecraft.getInstance().player.containerMenu instanceof UniCon == false){
+					net.minecraft.client.Minecraft.getInstance().player.closeContainer();
+				}
+				else e.printStackTrace();
+			}
 		});
 	}
 
 	public void handle_server(IPayloadContext context){
 		context.workHandler().submitAsync(() -> {
-			((UIPacketReceiver)context.player().get().containerMenu).onPacket(com, false);
+			try{
+				((UIPacketReceiver)context.player().get().containerMenu).onPacket(com, false);
+			}
+			catch(Exception e){
+				FCL.LOGGER.info("Packet Error: " + com.toString());
+				if(context.player().get().containerMenu instanceof UniCon == false){
+					context.player().get().closeContainer();
+				}
+				else e.printStackTrace();
+			}
 		});
 	}
 
