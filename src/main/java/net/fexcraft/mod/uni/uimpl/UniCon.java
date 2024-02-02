@@ -50,6 +50,8 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 		}
 		con.SEND_TO_CLIENT = com -> PacketDistributor.PLAYER.with((ServerPlayer)player).send(new UIPacket(com.local()));;
 		con.SEND_TO_SERVER = com -> PacketDistributor.SERVER.noArg().send(new UIPacket(com.local()));
+		con.uiid = ui_type;
+		con.init();
 	}
 
 	protected ContainerInterface con;
