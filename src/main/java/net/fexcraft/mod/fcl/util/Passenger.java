@@ -101,8 +101,8 @@ public class Passenger extends EntityW {
 	}
 
 	@Override
-	public void openUI(int ui, WorldW world, V3I pos){
-		//
+	public void openUI(Object key, V3I pos){
+		//TODO
 	}
 
 	@Override
