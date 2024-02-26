@@ -3,6 +3,9 @@ package net.fexcraft.mod.uni.impl;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.minecraft.nbt.*;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -82,6 +85,24 @@ public class TagLWI implements TagLW {
 	@Override
 	public Object direct(){
 		return list;
+	}
+
+	@NotNull
+	@Override
+	public Iterator<TagCW> iterator(){
+		return new Iterator<TagCW>(){
+			int idx;
+			@Override
+			public boolean hasNext(){
+				return idx < list.size();
+			}
+			@Override
+			public TagCW next(){
+				Tag tag = list.get(idx++);
+				if(tag instanceof CompoundTag == false) return null;
+				return TagCW.wrap(tag);
+			}
+		};
 	}
 
 }
