@@ -2,16 +2,16 @@ package net.fexcraft.mod.uni.impl;
 
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
 public class IWR extends ItemWrapper {
 
-	public DeferredItem<Item> item;
+	public DeferredHolder<Item, Item> item;
 
-	public IWR(DeferredItem<Item> item){
+	public IWR(DeferredHolder<Item, Item> item){
 		this.item = item;
 	}
 
@@ -20,11 +20,11 @@ public class IWR extends ItemWrapper {
 	public void regToDict(){}
 
 	public Item local(){
-		return (Item)this.item.get();
+		return item.get();
 	}
 
 	public Object direct(){
-		return this.item.get();
+		return item.get();
 	}
 
 }
