@@ -7,7 +7,6 @@ import net.fexcraft.mod.fcl.FCL;
 import net.fexcraft.mod.fcl.util.UIPacketReceiver;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.fcl.UniversalAttachments;
-import net.fexcraft.mod.fcl.util.Passenger;
 import net.fexcraft.mod.fcl.util.UIPacket;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -41,7 +40,7 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 		ui_type = coninpos == null ? buffer.readUtf(buffer.readInt()) : coninpos;
 		JsonMap map = getJson(UniReg.MENU_JSON.get(ui_type) + ".json");
 		pos = buffer == null ? pos : new V3I(buffer.readInt(), buffer.readInt(), buffer.readInt());
-		Passenger pass = inv.player.getData(UniversalAttachments.PASSENGER);
+		EntityW pass = inv.player.getData(UniversalAttachments.PASSENGER);
 		try{
 			con = UniReg.MENU.get(ui_type).getConstructor(JsonMap.class, EntityW.class, V3I.class).newInstance(map, pass, pos);
 		}
