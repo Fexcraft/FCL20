@@ -1,6 +1,6 @@
 package net.fexcraft.mod.fcl;
 
-import net.fexcraft.mod.fcl.util.PassImpl;
+import net.fexcraft.mod.fcl.util.Passenger;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class UniversalAttachments {
 
 	private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, "fsmm");
-	public static final Class<? extends EntityW>[] PASS_IMPL = new Class[]{ PassImpl.class };
+	public static final Class<? extends EntityW>[] PASS_IMPL = new Class[]{ Passenger.class };
 	public static final Supplier<AttachmentType<EntityW>> PASSENGER = ATTACHMENT_TYPES
 		.register("passenger", () -> AttachmentType.builder(iah -> {
 			try{
@@ -24,7 +24,7 @@ public class UniversalAttachments {
 			}
 			catch(Exception e){
 				e.printStackTrace();
-				return new PassImpl(iah);
+				return new Passenger(iah);
 			}
 		}).build());
 
