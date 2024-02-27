@@ -15,6 +15,11 @@ public class SWI extends StackWrapper {
 		stack = new ItemStack((ItemLike)item.direct());
 	}
 
+	public SWI(ItemStack stack){
+		super(new IWI(stack.getItem()));
+		this.stack = stack;
+	}
+
 	public ItemStack local(){
 		return stack;
 	}
