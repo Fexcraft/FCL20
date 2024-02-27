@@ -16,11 +16,11 @@ import java.util.function.Supplier;
 public class UniversalAttachments {
 
 	private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, "fsmm");
-	public static final Class<? extends EntityW> PASS_IMPL = PassImpl.class;
+	public static final Class<? extends EntityW>[] PASS_IMPL = new Class[]{ PassImpl.class };
 	public static final Supplier<AttachmentType<EntityW>> PASSENGER = ATTACHMENT_TYPES
 		.register("passenger", () -> AttachmentType.builder(iah -> {
 			try{
-				return PASS_IMPL.getConstructor(IAttachmentHolder.class).newInstance(iah);
+				return PASS_IMPL[0].getConstructor(IAttachmentHolder.class).newInstance(iah);
 			}
 			catch(Exception e){
 				e.printStackTrace();
