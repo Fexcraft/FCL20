@@ -87,6 +87,11 @@ public class TagLWI implements TagLW {
 		return list;
 	}
 
+	@Override
+	public boolean empty(){
+		return list.isEmpty();
+	}
+
 	@NotNull
 	@Override
 	public Iterator<TagCW> iterator(){
