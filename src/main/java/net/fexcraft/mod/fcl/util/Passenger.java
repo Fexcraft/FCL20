@@ -2,6 +2,7 @@ package net.fexcraft.mod.fcl.util;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.uimpl.UniCon;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
@@ -101,11 +102,6 @@ public class Passenger extends EntityW {
 	}
 
 	@Override
-	public void openUI(Object key, V3I pos){
-		//TODO
-	}
-
-	@Override
 	public void openUI(String id, V3I pos){
 		((Player)entity).openMenu(new MenuProvider(){
 			@Override
@@ -129,6 +125,11 @@ public class Passenger extends EntityW {
 	@Override
 	public String getName(){
 		return entity.getName().getString();
+	}
+
+	@Override
+	public void drop(StackWrapper stack, float height){
+		entity.spawnAtLocation(stack.local(), height);
 	}
 
 	@Override
