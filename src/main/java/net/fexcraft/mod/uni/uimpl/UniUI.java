@@ -51,6 +51,17 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		catch(Exception e){
 			e.printStackTrace();
 		}
+		ui.drawer = new UserInterface.Drawer() {
+			@Override
+			public void draw(int x, int y, int u, int v, int w, int h){
+				matrix.blit((ResourceLocation)tab.texture, x, y, u, v, w, h);
+			}
+
+			@Override
+			public void bind(IDL texture){
+				bindTexture(texture);
+			}
+		};
 		imageWidth = ui.width;
 		imageHeight = ui.height;
 		INST = this;
@@ -61,6 +72,8 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		super.init();
 		ui.screen_width = width;
 		ui.screen_height = height;
+		ui.gLeft = leftPos;
+		ui.gTop = topPos;
 		for(UITab tab : this.tabs.values()){
 			for(UIField field : tab.fields.values()){
 				if(((UUIField)field).field == null) continue;
@@ -126,7 +139,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 
 	@Override
 	public boolean mouseClicked(double mx, double my, int mb){
-		if(ui.onClick(getGuiLeft(), getGuiTop(), (int)mx, (int)my, mb)) return true;
+		if(ui.onClick((int)mx, (int)my, mb)) return true;
 		return super.mouseClicked(mx, my, mb);
 	}
 
@@ -165,7 +178,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 				tooltip.add(Formatter.format(I18n.get(button.tooltip)));
 			}
 		}
-		ui.getTooltip(leftPos, topPos, mx, my, tooltip);
+		ui.getTooltip(mx, my, tooltip);
 		if(tooltip.size() > 0){
 			comtip.clear();
 			for(String str : tooltip) comtip.add(Component.literal(str));
@@ -207,7 +220,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			for(Map.Entry<String, UIButton> entry : tab.buttons.entrySet()){
 				if(exit) break;
 				if(entry.getValue().hovered(leftPos, topPos, x, y)){
-					exit = (entry.getValue().onscroll(leftPos, topPos, x, y, am) || this.ui.onScroll(entry.getValue(), entry.getKey(), leftPos, topPos, x, y, am));
+					exit = (entry.getValue().onscroll(leftPos, topPos, x, y, am) || this.ui.onScroll(entry.getValue(), entry.getKey(), x, y, am));
 				}
 			}
 			for(UIText text : tab.texts.values()){
