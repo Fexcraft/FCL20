@@ -18,6 +18,8 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.TooltipFlag;
 
 import java.util.*;
 
@@ -32,6 +34,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	protected ArrayList<String> tooltip = new ArrayList<>();
 	protected UserInterface ui;
 	protected GuiGraphics matrix;
+	protected UITab deftab;
 	protected UITab tab;
 
 	public UniUI(UniCon con, Inventory inventory, Component component){
@@ -51,6 +54,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		catch(Exception e){
 			e.printStackTrace();
 		}
+		deftab = (UITab)ui.tabs.values().toArray()[0];
 		ui.drawer = new UserInterface.Drawer() {
 			@Override
 			public void draw(int x, int y, int u, int v, int w, int h){
@@ -146,6 +150,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	@Override
 	protected void renderBg(GuiGraphics matrix, float ticks, int mx, int my){
 		this.matrix = matrix;
+		tab = deftab;
 		if(ui.background) renderTransparentBackground(matrix);
 		predraw(ticks, mx, my);
 		drawbackground(ticks, mx, my);
@@ -184,6 +189,11 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			for(String str : tooltip) comtip.add(Component.literal(str));
 			matrix.renderTooltip(minecraft.font, comtip, Optional.empty(), mx, my);
 		}
+		Slot slot = getSlotUnderMouse();
+		if(slot != null && !slot.getItem().isEmpty()){
+			List<Component> list = slot.getItem().getTooltipLines(menu.player, TooltipFlag.ADVANCED);
+			matrix.renderTooltip(minecraft.font, list, Optional.empty(), mx, my);
+		}
 	}
 
 	protected void predraw(float ticks, int mx, int my){
@@ -201,6 +211,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			}
 			matrix.blit((ResourceLocation)tab.texture, leftPos + tab.x, topPos + tab.y, tx, ty, tab.width, tab.height);
 		}
+		ui.drawbackground(ticks, mx, my);
 	}
 
 	protected void postdraw(float ticks, int mx, int my){
