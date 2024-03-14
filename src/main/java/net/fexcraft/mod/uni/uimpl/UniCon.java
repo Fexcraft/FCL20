@@ -128,7 +128,7 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 	@Override
 	public void removed(Player player){
 		super.removed(player);
-		con.onClosed(con.player);
+		con.onClosed();
 	}
 
 	public void setup(UniUI ui){
