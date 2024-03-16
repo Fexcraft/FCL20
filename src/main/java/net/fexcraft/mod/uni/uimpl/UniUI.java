@@ -4,6 +4,7 @@ package net.fexcraft.mod.uni.uimpl;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniReg;
@@ -56,6 +57,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		}
 		deftab = (UITab)ui.tabs.values().toArray()[0];
 		ui.drawer = new UserInterface.Drawer() {
+			private float[] colarr;
 			@Override
 			public void draw(int x, int y, int u, int v, int w, int h){
 				matrix.blit((ResourceLocation)tab.texture, x, y, u, v, w, h);
@@ -64,6 +66,12 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			@Override
 			public void bind(IDL texture){
 				bindTexture(texture);
+			}
+
+			@Override
+			public void apply(RGB color){
+				colarr = color.toFloatArray();
+				matrix.setColor(colarr[0], colarr[1], colarr[2], 1);
 			}
 		};
 		imageWidth = ui.width;
