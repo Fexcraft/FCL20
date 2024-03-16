@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  */
 public class UniversalAttachments {
 
-	private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, "fsmm");
+	private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, "fcl");
 	public static final Class<? extends EntityW>[] PASS_IMPL = new Class[]{ Passenger.class };
 	public static final Supplier<AttachmentType<EntityW>> PASSENGER = ATTACHMENT_TYPES
 		.register("passenger", () -> AttachmentType.builder(iah -> {
