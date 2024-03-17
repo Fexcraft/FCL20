@@ -6,8 +6,11 @@ import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.impl.IDLM;
+import net.fexcraft.mod.uni.impl.SWI;
 import net.fexcraft.mod.uni.impl.TagCWI;
 import net.fexcraft.mod.uni.impl.TagLWI;
+import net.fexcraft.mod.uni.item.ItemWrapper;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.ui.UIButton;
@@ -19,6 +22,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -39,9 +43,9 @@ public class FCL {
 
 	public static final String MODID = "fcl";
 	public static final Logger LOGGER = LogUtils.getLogger();
-    public static final ResourceLocation UI_PACKET = new ResourceLocation(MODID, "ui");
+	public static final ResourceLocation UI_PACKET = new ResourceLocation(MODID, "ui");
 	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(Registries.MENU, MODID);
-    public static final DeferredHolder<MenuType<?>, MenuType<UniCon>> UNIVERSAL = CONTAINERS.register("editor", () -> IMenuTypeExtension.create(UniCon::new));
+	public static final DeferredHolder<MenuType<?>, MenuType<UniCon>> UNIVERSAL = CONTAINERS.register("editor", () -> IMenuTypeExtension.create(UniCon::new));
 
 	public FCL(IEventBus bus){
 		EnvInfo.CLIENT = FMLLoader.getDist().isClient();
@@ -51,6 +55,11 @@ public class FCL {
 		TagCW.WRAPPER[0] = com -> new TagCWI((CompoundTag)com);
 		TagCW.SUPPLIER[0] = () -> new TagCWI();
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
+		StackWrapper.SUPPLIER = obj -> {
+			if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
+			if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
+			return null;
+		};
 		if(EnvInfo.CLIENT){
 			UITab.IMPLEMENTATION = UUITab.class;
 			UIText.IMPLEMENTATION = UUIText.class;
@@ -63,17 +72,17 @@ public class FCL {
 	}
 
 	@Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
+	public static class RegistryEvents {
 
-        @SubscribeEvent
-        public static void register(final RegisterPayloadHandlerEvent event){
-            final IPayloadRegistrar registrar = event.registrar(MODID).versioned("1.0.0").optional();
-            registrar.common(UI_PACKET, UIPacket::read, handler -> {
-                handler.server(UIPacket::handle_server);
-                handler.client(UIPacket::handle_client);
-            });
-        }
+		@SubscribeEvent
+		public static void register(final RegisterPayloadHandlerEvent event){
+			final IPayloadRegistrar registrar = event.registrar(MODID).versioned("1.0.0").optional();
+			registrar.common(UI_PACKET, UIPacket::read, handler -> {
+				handler.server(UIPacket::handle_server);
+				handler.client(UIPacket::handle_client);
+			});
+		}
 
-    }
+	}
 
 }
