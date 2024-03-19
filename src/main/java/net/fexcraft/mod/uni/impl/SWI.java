@@ -13,11 +13,15 @@ public class SWI extends StackWrapper {
 
 	public ItemStack stack;
 
+	/** Use StackWrapper.wrap() instead of direct. */
+	@Deprecated
 	public SWI(ItemWrapper item){
 		super(item);
 		stack = new ItemStack((ItemLike)item.direct());
 	}
 
+	/** Use StackWrapper.wrap() instead of direct. */
+	@Deprecated
 	public SWI(ItemStack stack){
 		super(new IWI(stack.getItem()));
 		this.stack = stack;
