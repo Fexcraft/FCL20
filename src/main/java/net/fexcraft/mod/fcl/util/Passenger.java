@@ -17,12 +17,13 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
+@AutoRegisterCapability
 public class Passenger extends EntityW {
 
 	private Entity entity;
