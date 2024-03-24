@@ -102,23 +102,14 @@ public class Passenger extends EntityW {
 
 	@Override
 	public void openUI(String id, V3I pos){
-		((Player)entity).openMenu(new MenuProvider(){
-			@Override
-			public Component getDisplayName(){
-				return Component.literal("Fexcraft Universal UI");
-			}
-			@Nullable
-			@Override
-			public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player){
-				return new UniCon(i, inventory, id, null, pos);
-			}
-		});/*, buf -> {
-			buf.writeInt(id.length());
-			buf.writeUtf(id);
-			buf.writeInt(pos.x);
-			buf.writeInt(pos.y);
-			buf.writeInt(pos.z);
-		});*/
+		PassengerUtil.UI_OPENER.open((Player)entity, id, pos);
+	}
+
+	@FunctionalInterface
+	public static interface PassengerUIOpen {
+
+		public void open(Player player, String ui, V3I pos);
+
 	}
 
 	@Override
