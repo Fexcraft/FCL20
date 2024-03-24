@@ -40,7 +40,7 @@ public class FCL {
 	public static final DeferredHolder<MenuType<?>, MenuType<UniCon>> UNIVERSAL = CONTAINERS.register("editor", () -> IMenuTypeExtension.create(UniCon::new));
 
 	public FCL(IEventBus bus){
-		PassengerUtil.GETTER = entity -> entity.getData(UniversalAttachments.PASSENGER);
+		PassengerUtil.GETTER = entity -> entity.getData(UniversalAttachments.PASSENGER.get());
 		PassengerUtil.UI_OPENER = (player, ui, pos) -> {
 			player.openMenu(new MenuProvider() {
 				@Override
