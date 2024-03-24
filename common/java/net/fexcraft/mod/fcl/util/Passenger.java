@@ -22,9 +22,9 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Passenger extends EntityW {
+public class Passenger implements EntityW {
 
-	private Entity entity;
+	protected Entity entity;
 
 	public Passenger(Entity iah){
 		entity = iah;
