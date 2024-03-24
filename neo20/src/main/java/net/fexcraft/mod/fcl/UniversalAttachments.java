@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fcl;
 
 import net.fexcraft.mod.fcl.util.Passenger;
+import net.fexcraft.mod.fcl.util.PassengerUtil;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.bus.api.IEventBus;
@@ -17,11 +18,10 @@ import java.util.function.Supplier;
 public class UniversalAttachments {
 
 	private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, "fcl");
-	public static final Class<? extends EntityW>[] PASS_IMPL = new Class[]{ Passenger.class };
-	public static final Supplier<AttachmentType<EntityW>> PASSENGER = ATTACHMENT_TYPES
+	public static final Supplier<AttachmentType<? extends EntityW>> PASSENGER = ATTACHMENT_TYPES
 		.register("passenger", () -> AttachmentType.builder(iah -> {
 			try{
-				return PASS_IMPL[0].getConstructor(Entity.class).newInstance(iah);
+				return PassengerUtil.PASS_IMPL.getConstructor(Entity.class).newInstance(iah);
 			}
 			catch(Exception e){
 				e.printStackTrace();
