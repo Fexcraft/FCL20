@@ -99,20 +99,26 @@ public class FCL {
 		ContainerInterface.SEND_TO_SERVER = com -> CHANNEL.sendToServer(new UIPacketF(com.local()));
 	}
 
-	@Mod.EventBusSubscriber(modid = "fvtm", bus = Mod.EventBusSubscriber.Bus.MOD)
-	public static class Events {
+	@Mod.EventBusSubscriber(modid = "fcl", bus = Mod.EventBusSubscriber.Bus.FORGE)
+	public static class ForgeBusEvents {
+
+		@SubscribeEvent
+		public static void onAttachCaps(AttachCapabilitiesEvent<Entity> event){
+			if(event.getObject() instanceof LivingEntity){
+				event.addCapability(new ResourceLocation("fcl:passenger"), new PassProvider(event.getObject()));
+			}
+		}
+
+	}
+
+	@Mod.EventBusSubscriber(modid = "fcl", bus = Mod.EventBusSubscriber.Bus.MOD)
+	public static class ModBusEvents {
 
 		@SubscribeEvent
 		public void registerCaps(RegisterCapabilitiesEvent event){
 			event.register(PassengerUtil.PASS_IMPL);
 		}
 
-		@SubscribeEvent
-		public static void onClientSetup(AttachCapabilitiesEvent<Entity> event){
-			if(event.getObject() instanceof LivingEntity){
-				event.addCapability(new ResourceLocation("fcl:passenger"), new PassProvider(event.getObject()));
-			}
-		}
 	}
 
 }
