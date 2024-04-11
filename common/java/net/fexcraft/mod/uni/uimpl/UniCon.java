@@ -83,6 +83,7 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 				}
 			}
 		}
+		con.root = this;
 		con.init();
 	}
 
