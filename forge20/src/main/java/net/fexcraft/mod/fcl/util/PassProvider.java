@@ -31,7 +31,7 @@ public class PassProvider implements ICapabilityProvider {
 
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction direction){
-		return optional.cast();
+		return capability == CAPABILITY ? optional.cast() : null;
 	}
 
 }
