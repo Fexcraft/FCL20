@@ -8,6 +8,7 @@ import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniReg;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.*;
 import net.minecraft.client.gui.GuiGraphics;
@@ -59,8 +60,13 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		ui.drawer = new UserInterface.Drawer() {
 			private float[] colarr;
 			@Override
-			public void draw(int x, int y, int u, int v, int w, int h){
-				matrix.blit((ResourceLocation)tab.texture, x, y, u, v, w, h);
+			public void draw(float x, float y, int u, int v, int w, int h){
+				matrix.blit((ResourceLocation)tab.texture, (int)x, (int)y, u, v, w, h);
+			}
+
+			@Override
+			public void draw(int x, int y, StackWrapper stack){
+				matrix.renderItem(stack.local(), x, y);
 			}
 
 			@Override
