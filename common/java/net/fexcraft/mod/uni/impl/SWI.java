@@ -1,9 +1,12 @@
 package net.fexcraft.mod.uni.impl;
 
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.item.ItemType;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.LeadItem;
@@ -67,6 +70,11 @@ public class SWI extends StackWrapper {
 	}
 
 	@Override
+	public void damage(int val){
+		stack.setDamageValue(val);
+	}
+
+	@Override
 	public int count(){
 		return stack.getCount();
 	}
@@ -108,6 +116,16 @@ public class SWI extends StackWrapper {
 	@Override
 	public <C> C getContent(Object contenttype){
 		return null;
+	}
+
+	@Override
+	public IDL getIDL(){
+		return IDLManager.getIDL(getID());
+	}
+
+	@Override
+	public String getID(){
+		return BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
 	}
 
 }
