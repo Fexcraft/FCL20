@@ -152,4 +152,14 @@ public class TagCWI implements TagCW {
 		return compound.getAllKeys();
 	}
 
+	@Override
+	public TagCW copy(){
+		return new TagCWI(compound.copy());
+	}
+
+	@Override
+	public void rem(String key){
+		compound.remove(key);
+	}
+
 }
