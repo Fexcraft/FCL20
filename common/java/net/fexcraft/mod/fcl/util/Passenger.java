@@ -167,12 +167,12 @@ public class Passenger implements EntityW {
 
 	@Override
 	public void bar(String s){
-		entity.sendSystemMessage(Component.translatable(s));//TODO
+		((Player)entity).displayClientMessage(Component.translatable(s), true);
 	}
 
 	@Override
 	public void bar(String str, Object... args){
-
+		((Player)entity).displayClientMessage(Component.translatable(str, args), true);
 	}
 
 	@Override
