@@ -95,7 +95,7 @@ public class FCL {
 			});
 			context.get().setPacketHandled(true);
 		});
-		ContainerInterface.SEND_TO_CLIENT = (com, player) -> CHANNEL.send(PacketDistributor.PLAYER.with(player.local()), new UIPacketF(com.local()));
+		ContainerInterface.SEND_TO_CLIENT = (com, player) -> CHANNEL.send(PacketDistributor.PLAYER.with(() -> player.local()), new UIPacketF(com.local()));
 		ContainerInterface.SEND_TO_SERVER = com -> CHANNEL.sendToServer(new UIPacketF(com.local()));
 	}
 
