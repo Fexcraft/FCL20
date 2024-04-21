@@ -95,6 +95,10 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 		this(id, inv, buffer.readUtf(buffer.readInt()), buffer, null);
 	}
 
+	public Slot addSlot(Slot slot){
+		return super.addSlot(slot);
+	}
+
 	@Override
 	public boolean stillValid(Player player){
 		return (player != null);
