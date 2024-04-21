@@ -33,11 +33,13 @@ public record UIPacketN(CompoundTag com) implements CustomPacketPayload {
 				((UIPacketReceiver)net.minecraft.client.Minecraft.getInstance().player.containerMenu).onPacket(com, true);
 			}
 			catch(Exception e){
-				FCL.LOGGER.info("Packet Error: " + com.toString());
+				FCL.LOGGER.error("Packet Error: " + com.toString());
 				if(net.minecraft.client.Minecraft.getInstance().player.containerMenu instanceof UniCon == false){
 					net.minecraft.client.Minecraft.getInstance().player.closeContainer();
 				}
-				else e.printStackTrace();
+				for(StackTraceElement elm : e.getStackTrace()){
+					FCL.LOGGER.error(elm.toString());
+				}
 			}
 		});
 	}
