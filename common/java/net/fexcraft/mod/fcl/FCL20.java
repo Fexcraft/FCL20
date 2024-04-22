@@ -5,10 +5,7 @@ import net.fexcraft.mod.fcl.util.Axis3DL;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.UniReg;
-import net.fexcraft.mod.uni.impl.IDLM;
-import net.fexcraft.mod.uni.impl.SWI;
-import net.fexcraft.mod.uni.impl.TagCWI;
-import net.fexcraft.mod.uni.impl.TagLWI;
+import net.fexcraft.mod.uni.impl.*;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -18,9 +15,16 @@ import net.fexcraft.mod.uni.uimpl.UUIButton;
 import net.fexcraft.mod.uni.uimpl.UUIField;
 import net.fexcraft.mod.uni.uimpl.UUITab;
 import net.fexcraft.mod.uni.uimpl.UUIText;
+import net.fexcraft.mod.uni.world.StateWrapper;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -42,6 +46,12 @@ public class FCL20 {
 			if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
 			if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
 			return null;
+		};
+		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.defaultBlockState());
+		StateWrapper.STATE_WRAPPER = state -> new StateWrapperI((BlockState)state);
+		StateWrapper.STACK_WRAPPER = (stack, ctx) ->{
+			//TODO
+			return StateWrapper.DEFAULT;
 		};
 		if(EnvInfo.CLIENT){
 			UITab.IMPLEMENTATION = UUITab.class;
