@@ -18,13 +18,18 @@ import net.fexcraft.mod.uni.uimpl.UUIText;
 import net.fexcraft.mod.uni.world.StateWrapper;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -50,8 +55,15 @@ public class FCL20 {
 		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.defaultBlockState());
 		StateWrapper.STATE_WRAPPER = state -> new StateWrapperI((BlockState)state);
 		StateWrapper.STACK_WRAPPER = (stack, ctx) ->{
-			//TODO
-			return StateWrapper.DEFAULT;
+			Item item = stack.getItem().local();
+			if(item instanceof BlockItem){
+				Block block = ((BlockItem)item).getBlock();
+				BlockPos pos = new BlockPos(ctx.pos.x, ctx.pos.y, ctx.pos.z);
+				BlockHitResult res = new BlockHitResult(new Vec3(ctx.pos.x, ctx.pos.y, ctx.pos.z), Direction.UP, pos, true);
+				BlockPlaceContext btx = new BlockPlaceContext(ctx.world.local(), ctx.placer.local(), ctx.main ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND, stack.local(), res);
+				return StateWrapper.of(block.getStateForPlacement(btx));
+			}
+			else return StateWrapper.DEFAULT;
 		};
 		if(EnvInfo.CLIENT){
 			UITab.IMPLEMENTATION = UUITab.class;
