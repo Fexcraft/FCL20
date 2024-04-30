@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fcl;
 
 import com.mojang.logging.LogUtils;
+import net.fexcraft.mod.fcl.util.ClientPacketPlayer;
 import net.fexcraft.mod.fcl.util.PassProvider;
 import net.fexcraft.mod.fcl.util.PassengerUtil;
 import net.fexcraft.mod.fcl.util.UIPacketF;
@@ -32,7 +33,6 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
@@ -89,8 +89,7 @@ public class FCL {
 					((UniCon)player.containerMenu).onPacket(packet.com(), false);
 				}
 				else{
-					Player player = net.minecraft.client.Minecraft.getInstance().player;
-					((UniCon)player.containerMenu).onPacket(packet.com(), true);
+					((UniCon)ClientPacketPlayer.get().containerMenu).onPacket(packet.com(), true);
 				}
 			});
 			context.get().setPacketHandled(true);
