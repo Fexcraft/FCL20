@@ -19,7 +19,7 @@ public class TagCWI implements TagCW {
 	}
 
 	public TagCWI(CompoundTag com){
-		compound = com;
+		compound = com == null ? new CompoundTag() : com;
 	}
 
 	@Override
