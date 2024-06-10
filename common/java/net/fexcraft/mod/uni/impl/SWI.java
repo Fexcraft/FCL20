@@ -23,6 +23,11 @@ public class SWI extends StackWrapper {
 		stack = new ItemStack((ItemLike)item.direct());
 	}
 
+	@Override
+	public void set(Object obj){
+		stack = (ItemStack)obj;
+	}
+
 	/** Use StackWrapper.wrap() instead of direct. */
 	@Deprecated
 	public SWI(ItemStack stack){
