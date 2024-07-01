@@ -43,7 +43,7 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 		stack = inv.player.getItemInHand(InteractionHand.MAIN_HAND);
 		player = inv.player;
 		ui_type = coninpos == null ? buffer.readUtf(buffer.readInt()) : coninpos;
-		JsonMap map = getJson(UniReg.MENU_JSON.get(ui_type) + ".json");
+		JsonMap map = getJson(UniReg.MENU_JSON_S.get(ui_type) + ".json");
 		pos = buffer == null ? pos : new V3I(buffer.readInt(), buffer.readInt(), buffer.readInt());
 		EntityW pass = PassengerUtil.get(inv.player);
 		try{
@@ -153,7 +153,7 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 	@Override
 	public void onPacket(CompoundTag com, boolean client){
 		if(com.getBoolean("return")){
-			con.player.openUI(con.ui_map.getString("return", null), con.pos);
+			con.player.entity.openUI(con.ui_map.getString("return", null), con.pos);
 			return;
 		}
 		con.packet(TagCW.wrap(com), client);
