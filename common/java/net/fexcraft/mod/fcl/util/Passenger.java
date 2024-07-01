@@ -3,6 +3,7 @@ package net.fexcraft.mod.fcl.util;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.ui.UIKey;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
@@ -101,6 +102,11 @@ public class Passenger implements EntityW {
 	@Override
 	public void openUI(String id, V3I pos){
 		PassengerUtil.UI_OPENER.open((Player)entity, id, pos);
+	}
+
+	@Override
+	public void openUI(UIKey key, V3I pos){
+		openUI(key.key, pos);
 	}
 
 	@FunctionalInterface
