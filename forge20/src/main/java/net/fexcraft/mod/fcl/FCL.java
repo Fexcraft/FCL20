@@ -36,6 +36,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
+import static net.minecraft.network.chat.Component.literal;
+
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
@@ -56,12 +58,15 @@ public class FCL {
 	public FCL(){
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FCL20.init(!FMLEnvironment.production, FMLLoader.getDist().isClient());
-		PassengerUtil.GETTER = entity -> entity.getCapability(PassProvider.CAPABILITY).resolve().get();
+		PassengerUtil.GETTER = entity -> {
+			var v = entity.getCapability(PassProvider.CAPABILITY).resolve();
+			return v.isPresent() ? v.get() : null;
+		};
 		PassengerUtil.UI_OPENER = (player, ui, pos) -> {
 			NetworkHooks.openScreen((ServerPlayer)player, new MenuProvider() {
 				@Override
 				public Component getDisplayName(){
-					return Component.literal("Fexcraft Universal UI");
+					return literal("Fexcraft Universal UI");
 				}
 
 				@Override
@@ -94,7 +99,7 @@ public class FCL {
 			});
 			context.get().setPacketHandled(true);
 		});
-		ContainerInterface.SEND_TO_CLIENT = (com, player) -> CHANNEL.send(PacketDistributor.PLAYER.with(() -> player.local()), new UIPacketF(com.local()));
+		ContainerInterface.SEND_TO_CLIENT = (com, player) -> CHANNEL.send(PacketDistributor.PLAYER.with(() -> player.entity.local()), new UIPacketF(com.local()));
 		ContainerInterface.SEND_TO_SERVER = com -> CHANNEL.sendToServer(new UIPacketF(com.local()));
 	}
 
