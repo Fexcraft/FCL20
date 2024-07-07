@@ -5,13 +5,15 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
-import net.fexcraft.mod.fcl.util.PassengerUtil;
+import net.fexcraft.mod.fcl.util.EntityUtil;
 import net.fexcraft.mod.fcl.util.UIPacketReceiver;
 import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.InventoryInterface;
+import net.fexcraft.mod.uni.ui.UIKey;
 import net.fexcraft.mod.uni.ui.UISlot;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.minecraft.nbt.CompoundTag;
@@ -37,17 +39,22 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 	protected UniUI screen;
 	protected Player player;
 	protected int slotam;
+	//
+	protected ContainerInterface con;
+	protected UIKey ui_type;
+	protected UniUI uni;
+
 
 	public UniCon(int id, Inventory inv, String coninpos, FriendlyByteBuf buffer, V3I pos){
 		super(FCL.UNIVERSAL.get(), id);
 		stack = inv.player.getItemInHand(InteractionHand.MAIN_HAND);
 		player = inv.player;
-		ui_type = coninpos == null ? buffer.readUtf(buffer.readInt()) : coninpos;
+		ui_type = UIKey.find(coninpos == null ? buffer.readUtf(buffer.readInt()) : coninpos);
 		JsonMap map = getJson(UniReg.MENU_JSON_S.get(ui_type) + ".json");
 		pos = buffer == null ? pos : new V3I(buffer.readInt(), buffer.readInt(), buffer.readInt());
-		EntityW pass = PassengerUtil.get(inv.player);
+		UniEntity entity = UniEntity.get(inv.player);
 		try{
-			con = UniReg.MENU.get(ui_type).getConstructor(JsonMap.class, EntityW.class, V3I.class).newInstance(map, pass, pos);
+			con = UniReg.MENU.get(ui_type).getConstructor(JsonMap.class, UniEntity.class, V3I.class).newInstance(map, entity, pos);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -86,10 +93,6 @@ public class UniCon extends AbstractContainerMenu implements UIPacketReceiver {
 		con.root = this;
 		con.init();
 	}
-
-	protected ContainerInterface con;
-	protected String ui_type;
-	protected UniUI uni;
 
 	public UniCon(int id, Inventory inv, FriendlyByteBuf buffer){
 		this(id, inv, buffer.readUtf(buffer.readInt()), buffer, null);
