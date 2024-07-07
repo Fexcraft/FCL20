@@ -157,6 +157,21 @@ public class Passenger implements EntityW {
 	}
 
 	@Override
+	public int getInventorySize(){
+		return ((Player)entity).getInventory().getContainerSize();
+	}
+
+	@Override
+	public StackWrapper getStackAt(int idx){
+		return StackWrapper.wrap(((Player)entity).getInventory().getItem(idx));
+	}
+
+	@Override
+	public void addStack(StackWrapper stack){
+		((Player)entity).getInventory().add(stack.local());
+	}
+
+	@Override
 	public void send(String s){
 		entity.sendSystemMessage(Component.translatable(s));
 	}
