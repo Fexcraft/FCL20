@@ -2,9 +2,10 @@ package net.fexcraft.mod.fcl;
 
 import com.mojang.logging.LogUtils;
 import net.fexcraft.mod.fcl.util.ClientPacketPlayer;
-import net.fexcraft.mod.fcl.util.PassProvider;
-import net.fexcraft.mod.fcl.util.PassengerUtil;
+import net.fexcraft.mod.fcl.util.UniEntityProvider;
+import net.fexcraft.mod.fcl.util.EntityUtil;
 import net.fexcraft.mod.fcl.util.UIPacketF;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.uimpl.UniCon;
 import net.minecraft.core.registries.Registries;
@@ -58,11 +59,11 @@ public class FCL {
 	public FCL(){
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FCL20.init(!FMLEnvironment.production, FMLLoader.getDist().isClient());
-		PassengerUtil.GETTER = entity -> {
-			var v = entity.getCapability(PassProvider.CAPABILITY).resolve();
+		UniEntity.GETTER = ent -> {
+			var v = ((Entity)ent).getCapability(UniEntityProvider.CAPABILITY).resolve();
 			return v.isPresent() ? v.get() : null;
 		};
-		PassengerUtil.UI_OPENER = (player, ui, pos) -> {
+		EntityUtil.UI_OPENER = (player, ui, pos) -> {
 			NetworkHooks.openScreen((ServerPlayer)player, new MenuProvider() {
 				@Override
 				public Component getDisplayName(){
@@ -81,6 +82,7 @@ public class FCL {
 				buf.writeInt(pos.z);
 			});
 		};
+		//UniEntity.GETTER
 		//
 		CONTAINERS.register(bus);
 		bus.addListener(this::commonSetup);
@@ -109,7 +111,7 @@ public class FCL {
 		@SubscribeEvent
 		public static void onAttachCaps(AttachCapabilitiesEvent<Entity> event){
 			if(event.getObject() instanceof LivingEntity){
-				event.addCapability(new ResourceLocation("fcl:passenger"), new PassProvider(event.getObject()));
+				event.addCapability(new ResourceLocation("fcl:passenger"), new UniEntityProvider(event.getObject()));
 			}
 		}
 
@@ -120,7 +122,7 @@ public class FCL {
 
 		@SubscribeEvent
 		public void registerCaps(RegisterCapabilitiesEvent event){
-			event.register(PassengerUtil.PASS_IMPL);
+			event.register(UniEntity.class);
 		}
 
 	}
