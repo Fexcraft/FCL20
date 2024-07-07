@@ -2,11 +2,13 @@ package net.fexcraft.mod.fcl.util;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.ui.UIKey;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -21,11 +23,11 @@ import java.util.UUID;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Passenger implements EntityW {
+public class EntityWI implements EntityW {
 
 	protected Entity entity;
 
-	public Passenger(Entity iah){
+	public EntityWI(Entity iah){
 		entity = iah;
 	}
 
@@ -101,7 +103,7 @@ public class Passenger implements EntityW {
 
 	@Override
 	public void openUI(String id, V3I pos){
-		PassengerUtil.UI_OPENER.open((Player)entity, id, pos);
+		EntityUtil.UI_OPENER.open((Player)entity, id, pos);
 	}
 
 	@Override
@@ -110,7 +112,7 @@ public class Passenger implements EntityW {
 	}
 
 	@FunctionalInterface
-	public static interface PassengerUIOpen {
+	public static interface UIOpen {
 
 		public void open(Player player, String ui, V3I pos);
 
@@ -173,7 +175,7 @@ public class Passenger implements EntityW {
 
 	@Override
 	public void send(String s){
-		entity.sendSystemMessage(Component.translatable(s));
+		entity.sendSystemMessage(Component.literal(Formatter.format(Component.translatable(s).getString())));
 	}
 
 	@Override
@@ -194,6 +196,21 @@ public class Passenger implements EntityW {
 	@Override
 	public void dismount(){
 		entity.unRide();
+	}
+
+	@Override
+	public V3D getEyeVec(){
+		return new V3D(entity.getEyePosition().x, entity.getEyePosition().y, entity.getEyePosition().z);
+	}
+
+	@Override
+	public V3D getLookVec(){;
+		return new V3D(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z);
+	}
+
+	@Override
+	public boolean isShiftDown(){
+		return entity.isShiftKeyDown();
 	}
 
 }
