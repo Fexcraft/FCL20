@@ -1,5 +1,6 @@
 package net.fexcraft.mod.fcl.util;
 
+import net.fexcraft.mod.uni.UniEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.capabilities.Capability;
@@ -13,20 +14,15 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class PassProvider implements ICapabilityProvider {
+public class UniEntityProvider implements ICapabilityProvider {
 
-	public static final Capability<? extends Passenger> CAPABILITY = CapabilityManager.get(new CapabilityToken<>(){});
-	private LazyOptional<? extends Passenger> optional;
-	private Passenger passenger;
+	public static final Capability<UniEntity> CAPABILITY = CapabilityManager.get(new CapabilityToken<>(){});
+	private LazyOptional<UniEntity> optional;
+	private UniEntity unient;
 
-	public PassProvider(Entity entity){
-		try{
-			passenger = PassengerUtil.PASS_IMPL.getConstructor(Entity.class).newInstance(entity);
-		}
-		catch(Exception e){
-			throw new RuntimeException(e);
-		}
-		optional = LazyOptional.of(() -> passenger);
+	public UniEntityProvider(Entity entity){
+		unient = new UniEntity().set(entity);
+		optional = LazyOptional.of(() -> unient);
 	}
 
 	@Override
