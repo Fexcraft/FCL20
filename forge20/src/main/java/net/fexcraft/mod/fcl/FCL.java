@@ -1,11 +1,11 @@
 package net.fexcraft.mod.fcl;
 
 import com.mojang.logging.LogUtils;
-import net.fexcraft.mod.fcl.util.ClientPacketPlayer;
-import net.fexcraft.mod.fcl.util.UniEntityProvider;
-import net.fexcraft.mod.fcl.util.EntityUtil;
-import net.fexcraft.mod.fcl.util.UIPacketF;
+import net.fexcraft.mod.fcl.util.*;
 import net.fexcraft.mod.uni.UniEntity;
+import net.fexcraft.mod.uni.impl.SWI;
+import net.fexcraft.mod.uni.item.ItemWrapper;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.uimpl.UniCon;
 import net.minecraft.core.registries.Registries;
@@ -19,6 +19,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -47,7 +49,6 @@ public class FCL {
 
 	public static final String MODID = "fcl";
 	public static final Logger LOGGER = LogUtils.getLogger();
-	public static final ResourceLocation UI_PACKET = new ResourceLocation(MODID, "ui");
 	public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(Registries.MENU, MODID);
 	public static final RegistryObject<MenuType<UniCon>> UNIVERSAL = CONTAINERS.register("universal", () -> IForgeMenuType.create(UniCon::new));
 	public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder.named(new ResourceLocation("fcl", "channel"))
@@ -59,6 +60,16 @@ public class FCL {
 	public FCL(){
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FCL20.init(!FMLEnvironment.production, FMLLoader.getDist().isClient());
+		StackWrapper.SUPPLIER = obj -> {
+			if(obj instanceof ItemWrapper){
+				return StackWrapper.SUPPLIER.apply(new ItemStack((Item)((ItemWrapper)obj).local()));
+			}
+			if(obj instanceof ItemStack){
+				var v = ((ItemStack)obj).getCapability(StackWrapperProvider.CAPABILITY).resolve();
+				if(v.isPresent()) return v.get();
+			};
+			return StackWrapper.EMPTY;
+		};
 		UniEntity.GETTER = ent -> {
 			var v = ((Entity)ent).getCapability(UniEntityProvider.CAPABILITY).resolve();
 			return v.isPresent() ? v.get() : null;
@@ -89,6 +100,7 @@ public class FCL {
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event){
+		StackWrapper.EMPTY = new SWI(ItemStack.EMPTY);
 		CHANNEL.registerMessage(1, UIPacketF.class, (packet, buffer) -> buffer.writeNbt(packet.com()), buffer -> new UIPacketF(buffer.readNbt()), (packet, context) -> {
 			context.get().enqueueWork(() -> {
 				if(context.get().getDirection().getOriginationSide().isClient()){
@@ -109,10 +121,15 @@ public class FCL {
 	public static class ForgeBusEvents {
 
 		@SubscribeEvent
-		public static void onAttachCaps(AttachCapabilitiesEvent<Entity> event){
+		public static void onAttachEntityCaps(AttachCapabilitiesEvent<Entity> event){
 			if(event.getObject() instanceof LivingEntity){
-				event.addCapability(new ResourceLocation("fcl:passenger"), new UniEntityProvider(event.getObject()));
+				event.addCapability(new ResourceLocation("fcl:entity"), new UniEntityProvider(event.getObject()));
 			}
+		}
+
+		@SubscribeEvent
+		public static void onAttachStackCaps(AttachCapabilitiesEvent<ItemStack> event){
+			event.addCapability(new ResourceLocation("fcl:stack"), new StackWrapperProvider(event.getObject()));
 		}
 
 	}
@@ -123,6 +140,7 @@ public class FCL {
 		@SubscribeEvent
 		public void registerCaps(RegisterCapabilitiesEvent event){
 			event.register(UniEntity.class);
+			event.register(StackWrapper.class);
 		}
 
 	}
