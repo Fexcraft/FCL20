@@ -54,11 +54,6 @@ public class FCL20 {
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
 		ItemWrapper.GETTER = id -> BuiltInRegistries.ITEM.get(new ResourceLocation(id));
 		ItemWrapper.SUPPLIER = item -> new IWI((Item)item);
-		StackWrapper.SUPPLIER = obj -> {
-			if(obj instanceof ItemWrapper) return new SWI((ItemWrapper)obj);
-			if(obj instanceof ItemStack) return new SWI((ItemStack)obj);
-			return null;
-		};
 		StateWrapper.DEFAULT = new StateWrapperI(Blocks.AIR.defaultBlockState());
 		StateWrapper.STATE_WRAPPER = state -> new StateWrapperI((BlockState)state);
 		StateWrapper.STACK_WRAPPER = (stack, ctx) ->{
