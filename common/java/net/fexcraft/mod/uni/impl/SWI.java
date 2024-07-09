@@ -21,6 +21,7 @@ public class SWI extends StackWrapper {
 	public SWI(ItemWrapper item){
 		super(item);
 		stack = new ItemStack((ItemLike)item.direct());
+		appended.init(appendables);
 	}
 
 	@Override
@@ -33,6 +34,7 @@ public class SWI extends StackWrapper {
 	public SWI(ItemStack stack){
 		super(new IWI(stack.getItem()));
 		this.stack = stack;
+		appended.init(appendables);
 	}
 
 	public ItemStack local(){
@@ -91,7 +93,7 @@ public class SWI extends StackWrapper {
 
 	@Override
 	public StackWrapper copy(){
-		return new SWI(stack.copy());
+		return wrap(stack.copy());
 	}
 
 	@Override
