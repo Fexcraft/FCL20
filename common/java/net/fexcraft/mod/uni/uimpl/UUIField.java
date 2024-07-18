@@ -37,6 +37,7 @@ public class UUIField extends UIField {
 		field.setValue(value);
 		field.active = enabled;
 		field.setVisible(visible);
+		field.setMaxLength(maxlength);
 	}
 
 	public boolean visible(){
