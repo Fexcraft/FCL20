@@ -48,7 +48,6 @@ public class FCL20 {
 		if(client){
 			AxisRotator.DefHolder.DEF_IMPL = Axis3DL.class;
 		}
-		IDLManager.INSTANCE[0] = new IDLM();
 		TagCW.WRAPPER[0] = com -> new TagCWI((CompoundTag)com);
 		TagCW.SUPPLIER[0] = () -> new TagCWI();
 		TagLW.SUPPLIER[0] = () -> new TagLWI();
