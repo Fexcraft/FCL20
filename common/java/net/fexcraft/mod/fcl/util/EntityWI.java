@@ -11,6 +11,7 @@ import net.fexcraft.mod.uni.world.WrapperHolder;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -211,6 +212,11 @@ public class EntityWI implements EntityW {
 	@Override
 	public boolean isShiftDown(){
 		return entity.isShiftKeyDown();
+	}
+
+	@Override
+	public void playSound(Object event, float volume, float pitch){
+		entity.playSound((SoundEvent)event, volume, pitch);
 	}
 
 }
