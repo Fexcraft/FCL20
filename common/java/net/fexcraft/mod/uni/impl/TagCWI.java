@@ -2,8 +2,8 @@ package net.fexcraft.mod.uni.impl;
 
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.fexcraft.mod.uni.tag.TagType;
+import net.minecraft.nbt.*;
 
 import java.util.Collection;
 
@@ -160,6 +160,22 @@ public class TagCWI implements TagCW {
 	@Override
 	public void rem(String key){
 		compound.remove(key);
+	}
+
+	@Override
+	public TagType getType(String key){
+		Tag base = compound.get(key);
+		if(base instanceof CompoundTag) return TagType.COMPOUND;
+		if(base instanceof ListTag) return TagType.LIST;
+		if(base instanceof StringTag) return TagType.STRING;
+		if(base instanceof LongTag) return TagType.LONG;
+		if(base instanceof IntTag) return TagType.INT;
+		if(base instanceof IntArrayTag) return TagType.INT_ARRAY;
+		if(base instanceof ShortTag) return TagType.SHORT;
+		if(base instanceof ByteTag) return TagType.BYTE;
+		if(base instanceof FloatTag) return TagType.FLOAT;
+		if(base instanceof DoubleTag) return TagType.DOUBLE;
+		return TagType.UNKNOWN;
 	}
 
 	@Override
