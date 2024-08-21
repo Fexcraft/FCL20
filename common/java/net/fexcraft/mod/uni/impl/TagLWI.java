@@ -2,6 +2,7 @@ package net.fexcraft.mod.uni.impl;
 
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
+import net.fexcraft.mod.uni.tag.TagType;
 import net.minecraft.nbt.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -90,6 +91,22 @@ public class TagLWI implements TagLW {
 	@Override
 	public boolean empty(){
 		return list.isEmpty();
+	}
+
+	@Override
+	public TagType getType(int idx){
+		Tag base = list.get(idx);
+		if(base instanceof CompoundTag) return TagType.COMPOUND;
+		if(base instanceof ListTag) return TagType.LIST;
+		if(base instanceof StringTag) return TagType.STRING;
+		if(base instanceof LongTag) return TagType.LONG;
+		if(base instanceof IntTag) return TagType.INT;
+		if(base instanceof IntArrayTag) return TagType.INT_ARRAY;
+		if(base instanceof ShortTag) return TagType.SHORT;
+		if(base instanceof ByteTag) return TagType.BYTE;
+		if(base instanceof FloatTag) return TagType.FLOAT;
+		if(base instanceof DoubleTag) return TagType.DOUBLE;
+		return TagType.UNKNOWN;
 	}
 
 	@NotNull
