@@ -2,6 +2,7 @@ package net.fexcraft.mod.fcl;
 
 import com.mojang.logging.LogUtils;
 import net.fexcraft.mod.fcl.util.*;
+import net.fexcraft.mod.uni.UniChunk;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.impl.SWI;
 import net.fexcraft.mod.uni.item.ItemWrapper;
@@ -21,6 +22,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -72,6 +74,10 @@ public class FCL {
 		};
 		UniEntity.GETTER = ent -> {
 			var v = ((Entity)ent).getCapability(UniEntityProvider.CAPABILITY).resolve();
+			return v.isPresent() ? v.get() : null;
+		};
+		UniChunk.GETTER = ck -> {
+			var v = ((LevelChunk)ck).getCapability(UniChunkProvider.CAPABILITY).resolve();
 			return v.isPresent() ? v.get() : null;
 		};
 		EntityUtil.UI_OPENER = (player, ui, pos) -> {
@@ -132,6 +138,11 @@ public class FCL {
 			event.addCapability(new ResourceLocation("fcl:stack"), new StackWrapperProvider(event.getObject()));
 		}
 
+		@SubscribeEvent
+		public static void onAttachChunkCaps(AttachCapabilitiesEvent<LevelChunk> event){
+			event.addCapability(new ResourceLocation("fcl:chunk"), new UniChunkProvider(event.getObject()));
+		}
+
 	}
 
 	@Mod.EventBusSubscriber(modid = "fcl", bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -141,6 +152,7 @@ public class FCL {
 		public void registerCaps(RegisterCapabilitiesEvent event){
 			event.register(UniEntity.class);
 			event.register(StackWrapper.class);
+			event.register(UniChunk.class);
 		}
 
 	}
