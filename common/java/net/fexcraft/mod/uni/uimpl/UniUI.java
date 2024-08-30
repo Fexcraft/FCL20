@@ -6,8 +6,10 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.mod.fcl.util.ExternalTextures;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniReg;
+import net.fexcraft.mod.uni.impl.ResLoc;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.*;
@@ -65,6 +67,11 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			}
 
 			@Override
+			public void drawFull(float x, float y, int w, int h){
+				matrix.blit((ResourceLocation)tab.texture, (int)x, (int)y, 0, 0, w, h, w, h);
+			}
+
+			@Override
 			public void draw(int x, int y, StackWrapper stack){
 				matrix.renderItem(stack.local(), x, y);
 			}
@@ -78,6 +85,16 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			public void apply(RGB color){
 				colarr = color.toFloatArray();
 				matrix.setColor(colarr[0], colarr[1], colarr[2], 1);
+			}
+
+			@Override
+			public String translate(String str, Object... args){
+				return Formatter.format(I18n.get(str, args));
+			}
+
+			@Override
+			public IDL loadExternal(String urltex){
+				return new ResLoc(ExternalTextures.get("fcl-url", urltex).toString());
 			}
 		};
 		imageWidth = ui.width;
