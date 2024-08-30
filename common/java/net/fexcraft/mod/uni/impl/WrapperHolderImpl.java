@@ -1,5 +1,6 @@
 package net.fexcraft.mod.uni.impl;
 
+import com.mojang.authlib.GameProfile;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.world.CubeSide;
 import net.fexcraft.mod.uni.world.WorldW;
@@ -12,6 +13,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -70,6 +72,23 @@ public class WrapperHolderImpl extends WrapperHolder {
 			list.add(player.getGameProfile().getId());
 		}
 		return list;
+	}
+
+	@Override
+	public UUID getUUIDFor0(String string){
+		Optional<GameProfile> gp = ServerLifecycleHooks.getCurrentServer().getProfileCache().get(string);
+		return gp.isPresent() ? gp.get().getId() : null;
+	}
+
+	@Override
+	public String getNameFor0(UUID uuid){
+		Optional<GameProfile> gp = ServerLifecycleHooks.getCurrentServer().getProfileCache().get(uuid);
+		return gp.isPresent() ? gp.get().getName() : "N/F";
+	}
+
+	@Override
+	public void schedule0(Runnable run){
+		ServerLifecycleHooks.getCurrentServer().execute(run);
 	}
 
 	@Override
