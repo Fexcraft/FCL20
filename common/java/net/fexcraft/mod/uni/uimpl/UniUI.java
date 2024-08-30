@@ -33,7 +33,7 @@ import java.util.*;
 public class UniUI extends AbstractContainerScreen<UniCon> {
 
 	public static UniUI INST;
-	protected LinkedHashMap<String, UITab> tabs = new LinkedHashMap<>();
+	//protected LinkedHashMap<String, UITab> tabs = new LinkedHashMap<>();
 	protected ArrayList<Component> comtip = new ArrayList<>();
 	protected ArrayList<String> tooltip = new ArrayList<>();
 	protected UserInterface ui;
@@ -44,14 +44,16 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	public UniUI(UniCon con, Inventory inventory, Component component){
 		super(con, inventory, component);
 		menu.setup(this);
-		UserInterface.OI = (ui -> {
-			for(UITab tab : ui.tabs.values()){
-				for(UIField field : tab.fields.values()){
-					((UUIField)field).init();
-					addWidget(((UUIField)field).field);
+		if(UserInterface.OI == null){
+			UserInterface.OI = (ui -> {
+				for(UITab tab : ui.tabs.values()){
+					for(UIField field : tab.fields.values()){
+						((UUIField)field).init();
+						addWidget(((UUIField)field).field);
+					}
 				}
-			}
-		});
+			});
+		}
 		try{
 			ui = UniReg.GUI.get(menu.ui_type).getConstructor(JsonMap.class, ContainerInterface.class).newInstance(menu.con.ui_map, menu.con);
 		}
@@ -109,19 +111,13 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		ui.screen_height = height;
 		ui.gLeft = leftPos;
 		ui.gTop = topPos;
-		for(UITab tab : this.tabs.values()){
+		for(UITab tab : ui.tabs.values()){
 			for(UIField field : tab.fields.values()){
 				if(((UUIField)field).field == null) continue;
 				setFocused(((UUIField)field).field);
 			}
 		}
-		tabs.clear();
-		tabs.putAll(ui.tabs);
-		for(UITab tab : tabs.values()){
-			for(UIField field : tab.fields.values()){
-				setFocused(((UUIField)field).field);
-			}
-		}
+		ui.init();
 	}
 
 	@Override
@@ -189,7 +185,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		GlStateManager._enableBlend();
 		GlStateManager.glBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.value, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value, GlStateManager.SourceFactor.ONE.value, GlStateManager.DestFactor.ZERO.value);
 		GlStateManager._blendFunc(GlStateManager.SourceFactor.SRC_ALPHA.value, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value);
-		for(Iterator<UITab> it = tabs.values().iterator(); it.hasNext();){
+		for(Iterator<UITab> it = ui.tabs.values().iterator(); it.hasNext();){
 			UITab tab = it.next();
 			if(!tab.visible()) continue;
 			this.tab = tab;
@@ -257,7 +253,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	public boolean mouseScrolled(double mx, double my, double delta){
 		boolean exit = false;
 		int x = (int)mx, y = (int)my, am = (delta > 0.0D) ? -1 : 1;
-		for(UITab tab : this.tabs.values()){
+		for(UITab tab : ui.tabs.values()){
 			if(!tab.visible()) continue;
 			for(Map.Entry<String, UIButton> entry : tab.buttons.entrySet()){
 				if(exit) break;
