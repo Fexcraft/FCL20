@@ -2,8 +2,10 @@ package net.fexcraft.mod.fcl;
 
 import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.mod.fcl.util.Axis3DL;
+import net.fexcraft.mod.fcl.util.ChunkWI;
 import net.fexcraft.mod.fcl.util.EntityUtil;
 import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.UniChunk;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.impl.*;
@@ -33,6 +35,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -67,6 +70,7 @@ public class FCL20 {
 			else return StateWrapper.DEFAULT;
 		};
 		UniEntity.ENTITY_GETTER = ent -> EntityUtil.get((Entity)ent);
+		UniChunk.CHUNK_GETTER = ck -> new ChunkWI((LevelChunk)ck);
 		WrapperHolderImpl.LEVEL_PROVIDER = lvl -> new WorldWI((Level)lvl);
 		UISlot.GETTERS.put("default", args -> new Slot((Container)args[0], (Integer)args[1], (Integer)args[2], (Integer)args[3]));
 		if(EnvInfo.CLIENT){
