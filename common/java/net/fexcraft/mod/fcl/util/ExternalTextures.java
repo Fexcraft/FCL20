@@ -1,5 +1,6 @@
 package net.fexcraft.mod.fcl.util;
 
+import net.fexcraft.mod.uni.impl.ResLoc;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.HttpTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -12,13 +13,13 @@ import java.util.*;
  */
 public class ExternalTextures {
 
-	private static final Map<String, ResourceLocation> MAP = new HashMap<String, ResourceLocation>();
+	private static final Map<String, ResLoc> MAP = new HashMap<>();
 	private static final HashSet<String> KEY = new HashSet<>();
 	static{ KEY.add("documents"); }
 
-	public static ResourceLocation get(String mid, String url){
+	public static ResLoc get(String mid, String url){
 		if(MAP.containsKey(url)) return MAP.get(url);
-		ResourceLocation texture = new ResourceLocation(mid, url.replaceAll("[^a-z0-9_.-]", ""));
+		ResLoc texture = new ResLoc(mid, url.replaceAll("[^a-z0-9_.-]", ""));
 		MAP.put(url, texture);
 		File file = new File("./temp/fcl_download/" + texture.getPath());
 		if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
