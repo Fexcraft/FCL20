@@ -44,21 +44,17 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	public UniUI(UniCon con, Inventory inventory, Component component){
 		super(con, inventory, component);
 		menu.setup(this);
-		if(UserInterface.OI == null){
-			UserInterface.OI = (ui -> {
-				for(UITab tab : ui.tabs.values()){
-					for(UIField field : tab.fields.values()){
-						((UUIField)field).init();
-						addWidget(((UUIField)field).field);
-					}
-				}
-			});
-		}
 		try{
 			ui = UniReg.GUI.get(menu.ui_type).getConstructor(JsonMap.class, ContainerInterface.class).newInstance(menu.con.ui_map, menu.con);
 		}
 		catch(Exception e){
 			e.printStackTrace();
+		}
+		for(UITab tab : ui.tabs.values()){
+			for(UIField field : tab.fields.values()){
+				((UUIField)field).init();
+				addWidget(((UUIField)field).field);
+			}
 		}
 		deftab = (UITab)ui.tabs.values().toArray()[0];
 		ui.drawer = new UserInterface.Drawer() {
