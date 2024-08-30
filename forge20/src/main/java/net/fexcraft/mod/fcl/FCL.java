@@ -8,7 +8,7 @@ import net.fexcraft.mod.uni.impl.SWI;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
-import net.fexcraft.mod.uni.uimpl.UniCon;
+import net.fexcraft.mod.uni.ui.UniCon;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
