@@ -1,9 +1,6 @@
-package net.fexcraft.mod.uni.uimpl;
+package net.fexcraft.mod.uni.ui;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.mod.uni.ui.UIElement;
-import net.fexcraft.mod.uni.ui.UIField;
-import net.fexcraft.mod.uni.ui.UserInterface;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 

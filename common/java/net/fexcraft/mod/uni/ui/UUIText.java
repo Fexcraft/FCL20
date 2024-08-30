@@ -1,9 +1,6 @@
-package net.fexcraft.mod.uni.uimpl;
+package net.fexcraft.mod.uni.ui;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.mod.uni.ui.UIElement;
-import net.fexcraft.mod.uni.ui.UIText;
-import net.fexcraft.mod.uni.ui.UserInterface;
 import net.minecraft.client.resources.language.I18n;
 
 /**

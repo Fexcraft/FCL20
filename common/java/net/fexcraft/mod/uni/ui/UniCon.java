@@ -1,21 +1,15 @@
-package net.fexcraft.mod.uni.uimpl;
+package net.fexcraft.mod.uni.ui;
 
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fcl.FCL;
-import net.fexcraft.mod.fcl.util.EntityUtil;
 import net.fexcraft.mod.fcl.util.UIPacketReceiver;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.tag.TagCW;
-import net.fexcraft.mod.uni.ui.ContainerInterface;
-import net.fexcraft.mod.uni.ui.InventoryInterface;
-import net.fexcraft.mod.uni.ui.UIKey;
-import net.fexcraft.mod.uni.ui.UISlot;
-import net.fexcraft.mod.uni.world.EntityW;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;

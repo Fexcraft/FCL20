@@ -1,4 +1,4 @@
-package net.fexcraft.mod.uni.uimpl;
+package net.fexcraft.mod.uni.ui;
 
 
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -9,10 +9,8 @@ import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fcl.util.ExternalTextures;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.UniReg;
-import net.fexcraft.mod.uni.impl.ResLoc;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
-import net.fexcraft.mod.uni.ui.*;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
@@ -46,15 +44,13 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		menu.setup(this);
 		try{
 			ui = UniReg.GUI.get(menu.ui_type).getConstructor(JsonMap.class, ContainerInterface.class).newInstance(menu.con.ui_map, menu.con);
+			ui.root = this;
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		for(UITab tab : ui.tabs.values()){
-			for(UIField field : tab.fields.values()){
-				((UUIField)field).init();
-				addWidget(((UUIField)field).field);
-			}
+		for(UIField field : ui.fields.values()){
+			initField(field);
 		}
 		deftab = (UITab)ui.tabs.values().toArray()[0];
 		ui.drawer = new UserInterface.Drawer() {
@@ -92,12 +88,18 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 
 			@Override
 			public IDL loadExternal(String urltex){
-				return new ResLoc(ExternalTextures.get("fcl-url", urltex).toString());
+				return ExternalTextures.get("fcl-url", urltex);
 			}
 		};
 		imageWidth = ui.width;
 		imageHeight = ui.height;
 		INST = this;
+	}
+
+	public void initField(UIField field){
+		((UUIField)field).init();
+		addWidget(((UUIField)field).field);
+		field.visible(field.visible);
 	}
 
 	@Override

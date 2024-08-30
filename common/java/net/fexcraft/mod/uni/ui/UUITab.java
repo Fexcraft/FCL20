@@ -1,9 +1,7 @@
-package net.fexcraft.mod.uni.uimpl;
+package net.fexcraft.mod.uni.ui;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
-import net.fexcraft.mod.uni.ui.UITab;
-import net.fexcraft.mod.uni.ui.UserInterface;
 
 /**
  * @author Ferdinand Calo' (FEX___96)

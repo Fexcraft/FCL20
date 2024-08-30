@@ -1,10 +1,7 @@
-package net.fexcraft.mod.uni.uimpl;
+package net.fexcraft.mod.uni.ui;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
-import net.fexcraft.mod.uni.ui.UIButton;
-import net.fexcraft.mod.uni.ui.UIElement;
-import net.fexcraft.mod.uni.ui.UserInterface;
 import net.minecraft.resources.ResourceLocation;
 
 /**
