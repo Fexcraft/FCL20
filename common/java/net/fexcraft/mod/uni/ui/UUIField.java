@@ -68,4 +68,8 @@ public class UUIField extends UIField {
 		return field.getValue();
 	}
 
+	public void maxlength(int nl){
+		field.setMaxLength(maxlength = nl);
+	}
+
 }
