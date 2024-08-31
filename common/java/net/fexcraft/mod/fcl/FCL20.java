@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fcl;
 
 import net.fexcraft.lib.common.math.AxisRotator;
+import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fcl.util.Axis3DL;
 import net.fexcraft.mod.fcl.util.ChunkWI;
 import net.fexcraft.mod.fcl.util.EntityUtil;
@@ -78,8 +79,8 @@ public class FCL20 {
 			UIText.IMPLEMENTATION = UUIText.class;
 			UIField.IMPLEMENTATION = UUIField.class;
 			UIButton.IMPLEMENTATION = UUIButton.class;
-			ContainerInterface.TRANSLATOR = str -> I18n.get(str);
-			ContainerInterface.TRANSFORMAT = (str, objs) -> I18n.get(str, objs);
+			ContainerInterface.TRANSLATOR = str -> Formatter.format(I18n.get(str));
+			ContainerInterface.TRANSFORMAT = (str, objs) -> Formatter.format(I18n.get(str, objs));
 		}
 	}
 
