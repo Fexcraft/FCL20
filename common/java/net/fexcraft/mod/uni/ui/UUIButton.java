@@ -24,7 +24,7 @@ public class UUIButton extends UIButton {
 		int v = enabled ? (hovered ? hty : ty) : dty;
 		uui.matrix.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 		if(palette != null){
-			ResourceLocation resloc = (texture == null) ? (ResourceLocation)uui.tab.texture : (ResourceLocation)texture;
+			ResourceLocation resloc = (texture == null) ? (ResourceLocation)uui.actex : (ResourceLocation)texture;
 			for(int row = 0; row < palette.length; row++){
 				for(int col = 0; col < palette[row].length; col++){
 					int a = col * palsize[0];
@@ -43,10 +43,10 @@ public class UUIButton extends UIButton {
 		uui.matrix.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 		uui.matrix.setColor((rgb.packed >> 16 & 0xFF) / 255.0F, (rgb.packed >> 8 & 0xFF) / 255.0F, (rgb.packed & 0xFF) / 255.0F, rgb.alpha);
 		if(absolute){
-			uui.matrix.blit((texture == null) ? (ResourceLocation)uui.tab.texture : (ResourceLocation)texture, (x < 0) ? (uui.getGuiLeft() + x) : x, (y < 0) ? (uui.getGuiTop() + y) : y, u, v, width, height);
+			uui.matrix.blit((texture == null) ? (ResourceLocation)uui.actex : (ResourceLocation)texture, (x < 0) ? (uui.getGuiLeft() + x) : x, (y < 0) ? (uui.getGuiTop() + y) : y, u, v, width, height);
 		}
 		else{
-			uui.matrix.blit((texture == null) ? (ResourceLocation)uui.tab.texture : (ResourceLocation)texture, gl + x, gt + y, u, v, width, height);
+			uui.matrix.blit((texture == null) ? (ResourceLocation)uui.actex : (ResourceLocation)texture, gl + x, gt + y, u, v, width, height);
 		}
 		uui.matrix.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 	}
