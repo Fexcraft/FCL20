@@ -13,11 +13,11 @@ public class UUIText extends UIText {
 	}
 
 	public void translate(){
-		value = I18n.get(value);
+		value = ContainerInterface.translate(value);
 	}
 
 	public void translate(Object... objects){
-		value = I18n.get(value, objects);
+		value = ContainerInterface.transformat(value, objects);
 	}
 
 	public void draw(Object gui, UIElement root, float ticks, int gl, int gt, int mx, int my){
