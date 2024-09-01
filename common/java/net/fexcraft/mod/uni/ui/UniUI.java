@@ -37,7 +37,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	protected UserInterface ui;
 	protected GuiGraphics matrix;
 	protected UITab deftab;
-	protected UITab tab;
+	protected IDL actex;
 
 	public UniUI(UniCon con, Inventory inventory, Component component){
 		super(con, inventory, component);
@@ -57,12 +57,12 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 			private float[] colarr;
 			@Override
 			public void draw(float x, float y, int u, int v, int w, int h){
-				matrix.blit((ResourceLocation)tab.texture, (int)x, (int)y, u, v, w, h);
+				matrix.blit((ResourceLocation)actex, (int)x, (int)y, u, v, w, h);
 			}
 
 			@Override
 			public void drawFull(float x, float y, int w, int h){
-				matrix.blit((ResourceLocation)tab.texture, (int)x, (int)y, 0, 0, w, h, w, h);
+				matrix.blit((ResourceLocation)actex, (int)x, (int)y, 0, 0, w, h, w, h);
 			}
 
 			@Override
@@ -72,6 +72,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 
 			@Override
 			public void bind(IDL texture){
+				actex = texture;
 				bindTexture(texture);
 			}
 
@@ -88,7 +89,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 
 			@Override
 			public IDL loadExternal(String urltex){
-				return ExternalTextures.get("fcl-url", urltex);
+				return ExternalTextures.get("fcl", urltex);
 			}
 		};
 		imageWidth = ui.width;
@@ -175,7 +176,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	@Override
 	protected void renderBg(GuiGraphics matrix, float ticks, int mx, int my){
 		this.matrix = matrix;
-		tab = deftab;
+		actex = deftab.texture;
 		//if(ui.background) renderTransparentBackground(matrix);
 		predraw(ticks, mx, my);
 		drawbackground(ticks, mx, my);
@@ -186,7 +187,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 		for(Iterator<UITab> it = ui.tabs.values().iterator(); it.hasNext();){
 			UITab tab = it.next();
 			if(!tab.visible()) continue;
-			this.tab = tab;
+			actex = tab.texture;
 			bindTexture(tab.texture);
 			tab.buttons.forEach((key, button) -> {
 				button.hovered(leftPos, topPos, mx, my);
@@ -244,7 +245,7 @@ public class UniUI extends AbstractContainerScreen<UniCon> {
 	}
 
 	public void bindTexture(IDL texture){
-		this.minecraft.textureManager.bindForSetup((ResourceLocation)texture);
+		minecraft.textureManager.bindForSetup((ResourceLocation)texture);
 	}
 
 	//TODO
