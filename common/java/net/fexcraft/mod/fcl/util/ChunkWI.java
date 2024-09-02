@@ -48,7 +48,7 @@ public class ChunkWI implements ChunkW {
 
 	@Override
 	public void markChanged(){
-		//
+		chunk.setUnsaved(true);
 	}
 
 }
