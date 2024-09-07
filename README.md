@@ -7,3 +7,6 @@ http://fexcraft.net/license?id=mods
 
 # Discord
 https://discord.gg/AkMAzaA
+
+## Status
+Merged back into [FCL](https://github.com/fexcraft/fcl)
